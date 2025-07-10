@@ -1,5 +1,6 @@
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Post, Res, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { Response } from 'express';
 import { CreateTransferDTO } from 'src/application/dto/create-transfer.dto';
 import { TransferService } from 'src/application/services/transfer.service';
 import { JwtAuthGuard } from 'src/infrastructure/auth/jwt-auth.guard';
@@ -13,7 +14,12 @@ export class TransferController {
   @Post()
   @ApiOperation({ summary: 'Create transfer' })
   @ApiBearerAuth('jwt-swagger')
-  public async create(@Body() createTransferDTO: CreateTransferDTO) {
-    return await this.transferService.create(createTransferDTO);
+  public async create(
+    @Body() createTransferDTO: CreateTransferDTO,
+    @Res() response: Response,
+  ) {
+    await this.transferService.create(createTransferDTO);
+
+    return response.status(204).send();
   }
 }
