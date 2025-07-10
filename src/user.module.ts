@@ -23,5 +23,6 @@ import { UserRepositoryByTypeOrm } from './infrastructure/database/repositories/
       inject: ['UserRepository'],
     },
   ],
+  exports: [UserUseCase],
 })
 export class UserModule {}
