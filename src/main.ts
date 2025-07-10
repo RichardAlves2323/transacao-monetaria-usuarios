@@ -9,6 +9,17 @@ async function bootstrap() {
     .setTitle('API de Transação Monetaria entre usuarios')
     .setDescription('Documentação da API com NestJS + Swagger')
     .setVersion('1.0')
+    .addBearerAuth(
+      {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+        name: 'Authorization',
+        description: 'Informe o token JWT',
+        in: 'header',
+      },
+      'jwt-swagger',
+    )
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
