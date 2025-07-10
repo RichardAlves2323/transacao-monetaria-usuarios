@@ -38,4 +38,15 @@ export class UserRepositoryByTypeOrm implements UserRepository {
 
     return user ? UserTypeOrm.toDomain(user) : null;
   }
+
+  public async update(user: User): Promise<User> {
+    const userTypeOrm = UserTypeOrm.fromDomain(user);
+
+    await this.userRepositoryTypeOrm.update(
+      { id: userTypeOrm.id },
+      userTypeOrm,
+    );
+
+    return UserTypeOrm.toDomain(userTypeOrm);
+  }
 }

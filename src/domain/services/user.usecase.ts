@@ -15,14 +15,18 @@ export class UserUseCase {
   }
 
   public async findAll(): Promise<User[]> {
-    return this.userRepository.findAll();
+    return await this.userRepository.findAll();
   }
 
   public async findById(id: string): Promise<User | null> {
-    return this.userRepository.findById(id);
+    return await this.userRepository.findById(id);
   }
 
   public async findByUsername(username: string): Promise<User | null> {
-    return this.userRepository.findByUsername(username);
+    return await this.userRepository.findByUsername(username);
+  }
+
+  public async update(user: User): Promise<User> {
+    return await this.userRepository.update(user);
   }
 }
