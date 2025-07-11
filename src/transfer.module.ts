@@ -12,7 +12,6 @@ import { UserModule } from './user.module';
   imports: [TypeOrmModule.forFeature([TransferTypeOrm]), UserModule],
   controllers: [TransferController],
   providers: [
-    TransferService,
     {
       provide: 'TransferRepository',
       useClass: TransferRepositoryByTypeOrm,
@@ -26,6 +25,13 @@ import { UserModule } from './user.module';
         return new TransferUseCase(transferRepository, userUseCase);
       },
       inject: ['TransferRepository', UserUseCase],
+    },
+    {
+      provide: TransferService,
+      useFactory: (transferUseCase: TransferUseCase) => {
+        return new TransferService(transferUseCase);
+      },
+      inject: [TransferUseCase],
     },
   ],
 })
