@@ -1,5 +1,7 @@
 import { Transfer } from '../entities/transfer.entity';
 import { User } from '../entities/user.entity';
+import { SameUserError } from '../errors/same-user.error';
+import { UserNotFoundError } from '../errors/user-not-found.error';
 import { TransferRepository } from '../repositories/transfer.repository';
 import { UserUseCase } from './user.usecase';
 
@@ -34,14 +36,13 @@ export class TransferUseCase {
   }
 
   private checkUsersExist(fromUser: User | null, toUser: User | null): boolean {
-    if (!fromUser || !toUser) throw new Error('Usuario não encontrado');
+    if (!fromUser || !toUser) throw new UserNotFoundError();
 
     return true;
   }
 
   private checkSameUser(fromUser: User | null, toUser: User | null): boolean {
-    if (fromUser?.getId() === toUser?.getId())
-      throw new Error('Não pode realizar a transferencia para o mesmo usuario');
+    if (fromUser?.getId() === toUser?.getId()) throw new SameUserError();
     return true;
   }
 

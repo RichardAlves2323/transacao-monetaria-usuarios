@@ -1,3 +1,7 @@
+import { InvalidPasswordError } from '../errors/invalid-password.error';
+import { InvalidTransferValueError } from '../errors/invalid-transfer-value.error';
+import { InvalidUsernameError } from '../errors/invalid-username.error';
+
 export class User {
   private _id?: string;
   private _username: string;
@@ -39,7 +43,7 @@ export class User {
     const numberCharacters: number = 0;
 
     if (username.trim().length === numberCharacters)
-      throw new Error('O username não pode ser vazio');
+      throw new InvalidUsernameError();
 
     return username;
   }
@@ -67,8 +71,7 @@ export class User {
   private checkPassword(password: string): string {
     const numberCharacters: number = 8;
 
-    if (password.length < numberCharacters)
-      throw new Error('A senha deve ter mais de 8 caracteres');
+    if (password.length < numberCharacters) throw new InvalidPasswordError();
 
     return password;
   }
@@ -82,8 +85,7 @@ export class User {
   }
 
   private checkTransferBalance(amount: number): number {
-    if (amount <= 0)
-      throw new Error('O valor da transferencia deve ser maior que 0');
+    if (amount <= 0) throw new InvalidTransferValueError();
 
     return amount;
   }

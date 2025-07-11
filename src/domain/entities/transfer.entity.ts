@@ -1,3 +1,5 @@
+import { InvalidTransferValueError } from '../errors/invalid-transfer-value.error';
+
 export class Transfer {
   private _id?: string;
   private _fromId: string;
@@ -28,8 +30,7 @@ export class Transfer {
   }
 
   private checkAmount(amount: number): number {
-    if (amount <= 0)
-      throw new Error('O valor da transferencia deve ser maior que 0');
+    if (amount <= 0) throw new InvalidTransferValueError();
 
     return amount;
   }
