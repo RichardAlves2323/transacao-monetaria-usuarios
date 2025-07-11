@@ -21,7 +21,7 @@ export class UserUseCase {
   }
 
   private async checkUsername(username: string): Promise<boolean> {
-    const existUser = await this.findByUsername(username);
+    const existUser = await this.userRepository.findByUsername(username);
 
     if (existUser) throw new DuplicateUsernameError();
 
