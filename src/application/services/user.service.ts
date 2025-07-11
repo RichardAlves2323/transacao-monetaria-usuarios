@@ -1,6 +1,5 @@
 import { UserUseCase } from 'src/domain/services/user.usecase';
 import { CreateUserDTO } from '../dto/create-user.dto';
-import { User } from 'src/domain/entities/user.entity';
 import { UserDTO } from '../dto/user.dto';
 
 export class UserService {
@@ -11,34 +10,26 @@ export class UserService {
   }
 
   public async create(createUserDTO: CreateUserDTO): Promise<string> {
-    const user: User = CreateUserDTO.toDomain(createUserDTO);
+    const user = CreateUserDTO.toDomain(createUserDTO);
 
     return await this.userUseCase.create(user);
   }
 
   public async findAll(): Promise<UserDTO[]> {
-    const users: User[] = await this.userUseCase.findAll();
+    const users = await this.userUseCase.findAll();
 
     return users.map((user) => UserDTO.fromDomain(user));
   }
 
-  public async findById(id: string): Promise<UserDTO | null> {
-    const user: User | null = await this.userUseCase.findById(id);
+  public async findById(id: string): Promise<UserDTO> {
+    const user = await this.userUseCase.findById(id);
 
-    if (user) {
-      return UserDTO.fromDomain(user);
-    }
-
-    return null;
+    return UserDTO.fromDomain(user);
   }
 
-  public async findByUsername(username: string): Promise<UserDTO | null> {
-    const user: User | null = await this.userUseCase.findByUsername(username);
+  public async findByUsername(username: string): Promise<UserDTO> {
+    const user = await this.userUseCase.findByUsername(username);
 
-    if (user) {
-      return UserDTO.fromDomain(user);
-    }
-
-    return null;
+    return UserDTO.fromDomain(user);
   }
 }

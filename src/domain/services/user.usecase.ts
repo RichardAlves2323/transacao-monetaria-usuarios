@@ -1,5 +1,6 @@
 import { User } from '../entities/user.entity';
 import { DuplicateUsernameError } from '../errors/duplicate-username.error';
+import { UserNotFoundError } from '../errors/user-not-found.error';
 import { UserRepository } from '../repositories/user.repository';
 
 export class UserUseCase {
@@ -31,12 +32,20 @@ export class UserUseCase {
     return await this.userRepository.findAll();
   }
 
-  public async findById(id: string): Promise<User | null> {
-    return await this.userRepository.findById(id);
+  public async findById(id: string): Promise<User> {
+    const user = await this.userRepository.findById(id);
+
+    if (user) return user;
+
+    throw new UserNotFoundError();
   }
 
-  public async findByUsername(username: string): Promise<User | null> {
-    return await this.userRepository.findByUsername(username);
+  public async findByUsername(username: string): Promise<User> {
+    const user = await this.userRepository.findByUsername(username);
+
+    if (user) return user;
+
+    throw new UserNotFoundError();
   }
 
   public async update(user: User): Promise<User> {

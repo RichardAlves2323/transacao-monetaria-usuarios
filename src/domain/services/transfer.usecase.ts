@@ -1,7 +1,6 @@
 import { Transfer } from '../entities/transfer.entity';
 import { User } from '../entities/user.entity';
 import { SameUserError } from '../errors/same-user.error';
-import { UserNotFoundError } from '../errors/user-not-found.error';
 import { TransferRepository } from '../repositories/transfer.repository';
 import { UserUseCase } from './user.usecase';
 
@@ -21,28 +20,20 @@ export class TransferUseCase {
     const fromUser = await this.userUseCase.findById(transfer.getFromId());
     const toUser = await this.userUseCase.findById(transfer.getToId());
 
-    if (
-      this.checkUsersExist(fromUser, toUser) &&
-      this.checkSameUser(fromUser, toUser)
-    ) {
-      fromUser!.subtractFromBalance(transfer.getAmount());
-      toUser!.addToBalance(transfer.getAmount());
+    if (this.checkSameUser(fromUser, toUser)) {
+      fromUser.subtractFromBalance(transfer.getAmount());
+      toUser.addToBalance(transfer.getAmount());
 
-      await this.userUseCase.update(fromUser!);
-      await this.userUseCase.update(toUser!);
+      await this.userUseCase.update(fromUser);
+      await this.userUseCase.update(toUser);
 
       await this.transferRepository.save(transfer);
     }
   }
 
-  private checkUsersExist(fromUser: User | null, toUser: User | null): boolean {
-    if (!fromUser || !toUser) throw new UserNotFoundError();
+  private checkSameUser(fromUser: User, toUser: User): boolean {
+    if (fromUser.getId() === toUser.getId()) throw new SameUserError();
 
-    return true;
-  }
-
-  private checkSameUser(fromUser: User | null, toUser: User | null): boolean {
-    if (fromUser?.getId() === toUser?.getId()) throw new SameUserError();
     return true;
   }
 
