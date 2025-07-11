@@ -10,7 +10,6 @@ import { UserRepositoryByTypeOrm } from './infrastructure/database/repositories/
   imports: [TypeOrmModule.forFeature([UserTypeOrm])],
   controllers: [UserController],
   providers: [
-    UserService,
     {
       provide: 'UserRepository',
       useClass: UserRepositoryByTypeOrm,
@@ -21,6 +20,13 @@ import { UserRepositoryByTypeOrm } from './infrastructure/database/repositories/
         return new UserUseCase(userRepository);
       },
       inject: ['UserRepository'],
+    },
+    {
+      provide: UserService,
+      useFactory: (userUseCase: UserUseCase) => {
+        return new UserService(userUseCase);
+      },
+      inject: [UserUseCase],
     },
   ],
   exports: [UserUseCase],

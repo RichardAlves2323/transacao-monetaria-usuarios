@@ -1,10 +1,8 @@
-import { Injectable } from '@nestjs/common';
 import { UserUseCase } from 'src/domain/services/user.usecase';
 import { CreateUserDTO } from '../dto/create-user.dto';
 import { User } from 'src/domain/entities/user.entity';
 import { UserDTO } from '../dto/user.dto';
 
-@Injectable()
 export class UserService {
   private readonly userUseCase: UserUseCase;
 
