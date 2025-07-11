@@ -1,9 +1,11 @@
 import { Body, Controller, Get, Post, Res, UseGuards } from '@nestjs/common';
-import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
 import { CreateUserDTO } from 'src/application/dto/create-user.dto';
 import { UserService } from 'src/application/services/user.service';
 import { JwtAuthGuard } from 'src/infrastructure/auth/jwt-auth.guard';
+import { CreateUserSwaggerDTO } from '../dto/swagger/create-user.swagger.dto';
+import { UserSwaggerDTO } from '../dto/swagger/user.swagger.dto';
 
 @ApiTags('users')
 @Controller('users')
@@ -11,7 +13,11 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post()
-  @ApiOperation({ summary: 'Create user' })
+  @ApiBody({ type: CreateUserSwaggerDTO })
+  @ApiResponse({
+    status: 201,
+    description: 'Id do usuário criado',
+  })
   public async create(
     @Body() createUserDTO: CreateUserDTO,
     @Res() response: Response,
@@ -24,7 +30,11 @@ export class UserController {
   @UseGuards(JwtAuthGuard)
   @Get()
   @ApiBearerAuth('jwt-swagger')
-  @ApiOperation({ summary: 'List users' })
+  @ApiResponse({
+    status: 200,
+    description: 'Lista de usuários',
+    type: [UserSwaggerDTO],
+  })
   public async findAll(@Res() response: Response) {
     const users = await this.userService.findAll();
 
