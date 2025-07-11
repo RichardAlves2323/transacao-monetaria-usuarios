@@ -1,4 +1,5 @@
 import { User } from '../entities/user.entity';
+import { DuplicateUsernameError } from '../errors/duplicate-username.error';
 import { UserRepository } from '../repositories/user.repository';
 
 export class UserUseCase {
@@ -9,9 +10,21 @@ export class UserUseCase {
   }
 
   public async create(user: User): Promise<string> {
-    const newUser: User = await this.userRepository.save(user);
+    if (await this.checkUsername(user.getUserName())) {
+      const newUser: User = await this.userRepository.save(user);
 
-    return newUser.getId()!;
+      return newUser.getId()!;
+    }
+
+    throw new Error('Não foi possivel criar o usuario');
+  }
+
+  private async checkUsername(username: string): Promise<boolean> {
+    const existUser = await this.findByUsername(username);
+
+    if (existUser) throw new DuplicateUsernameError();
+
+    return true;
   }
 
   public async findAll(): Promise<User[]> {
