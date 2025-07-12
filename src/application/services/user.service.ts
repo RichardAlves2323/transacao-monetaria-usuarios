@@ -1,11 +1,11 @@
-import { UserUseCase } from 'src/domain/services/user.usecase';
 import { CreateUserDTO } from '../dto/create-user.dto';
 import { UserDTO } from '../dto/user.dto';
+import { IUserUseCase } from 'src/domain/usecases/user.usecase.interface';
 
 export class UserService {
-  private readonly userUseCase: UserUseCase;
+  private readonly userUseCase: IUserUseCase;
 
-  constructor(userUserCase: UserUseCase) {
+  constructor(userUserCase: IUserUseCase) {
     this.userUseCase = userUserCase;
   }
 
