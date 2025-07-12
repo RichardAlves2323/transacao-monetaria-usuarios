@@ -15,7 +15,7 @@ import { UserRepositoryByTypeOrm } from './infrastructure/database/repositories/
       useClass: UserRepositoryByTypeOrm,
     },
     {
-      provide: UserUseCase,
+      provide: 'IUserUseCase',
       useFactory: (userRepository: UserRepositoryByTypeOrm) => {
         return new UserUseCase(userRepository);
       },
@@ -26,9 +26,9 @@ import { UserRepositoryByTypeOrm } from './infrastructure/database/repositories/
       useFactory: (userUseCase: UserUseCase) => {
         return new UserService(userUseCase);
       },
-      inject: [UserUseCase],
+      inject: ['IUserUseCase'],
     },
   ],
-  exports: [UserUseCase],
+  exports: ['IUserUseCase'],
 })
 export class UserModule {}

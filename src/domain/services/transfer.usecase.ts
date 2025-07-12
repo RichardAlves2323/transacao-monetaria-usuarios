@@ -1,16 +1,16 @@
 import { Transfer } from '../entities/transfer.entity';
-import { User } from '../entities/user.entity';
 import { SameUserError } from '../errors/same-user.error';
 import { TransferRepository } from '../repositories/transfer.repository';
-import { UserUseCase } from './user.usecase';
+import { ITransferUseCase } from '../usecases/transfer.usecase.interface';
+import { IUserUseCase } from '../usecases/user.usecase.interface';
 
-export class TransferUseCase {
+export class TransferUseCase implements ITransferUseCase {
   private transferRepository: TransferRepository;
-  private userUseCase: UserUseCase;
+  private userUseCase: IUserUseCase;
 
   constructor(
     transferRepository: TransferRepository,
-    userUseCase: UserUseCase,
+    userUseCase: IUserUseCase,
   ) {
     this.transferRepository = transferRepository;
     this.userUseCase = userUseCase;
@@ -20,21 +20,15 @@ export class TransferUseCase {
     const fromUser = await this.userUseCase.findById(transfer.getFromId());
     const toUser = await this.userUseCase.findById(transfer.getToId());
 
-    if (this.checkSameUser(fromUser, toUser)) {
-      fromUser.subtractFromBalance(transfer.getAmount());
-      toUser.addToBalance(transfer.getAmount());
-
-      await this.userUseCase.update(fromUser);
-      await this.userUseCase.update(toUser);
-
-      await this.transferRepository.save(transfer);
-    }
-  }
-
-  private checkSameUser(fromUser: User, toUser: User): boolean {
     if (fromUser.getId() === toUser.getId()) throw new SameUserError();
 
-    return true;
+    fromUser.subtractFromBalance(transfer.getAmount());
+    toUser.addToBalance(transfer.getAmount());
+
+    await this.userUseCase.update(fromUser);
+    await this.userUseCase.update(toUser);
+
+    await this.transferRepository.save(transfer);
   }
 
   public async findAll(): Promise<Transfer[]> {

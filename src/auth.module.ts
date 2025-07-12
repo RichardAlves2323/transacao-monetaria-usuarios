@@ -21,7 +21,7 @@ import { UserUseCase } from './domain/services/user.usecase';
       useFactory: (jwtService: JwtService, userUseCase: UserUseCase) => {
         return new AuthService(jwtService, userUseCase);
       },
-      inject: [JwtService, UserUseCase],
+      inject: [JwtService, 'IUserUseCase'],
     },
     JwtStrategy,
   ],
