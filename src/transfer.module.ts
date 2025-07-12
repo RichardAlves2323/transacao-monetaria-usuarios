@@ -17,21 +17,21 @@ import { UserModule } from './user.module';
       useClass: TransferRepositoryByTypeOrm,
     },
     {
-      provide: TransferUseCase,
+      provide: 'ITransferUseCase',
       useFactory: (
         transferRepository: TransferRepositoryByTypeOrm,
         userUseCase: UserUseCase,
       ) => {
         return new TransferUseCase(transferRepository, userUseCase);
       },
-      inject: ['TransferRepository', UserUseCase],
+      inject: ['TransferRepository', 'IUserUseCase'],
     },
     {
       provide: TransferService,
       useFactory: (transferUseCase: TransferUseCase) => {
         return new TransferService(transferUseCase);
       },
-      inject: [TransferUseCase],
+      inject: ['ITransferUseCase'],
     },
   ],
 })
