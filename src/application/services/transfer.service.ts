@@ -1,10 +1,10 @@
-import { TransferUseCase } from 'src/domain/services/transfer.usecase';
 import { CreateTransferDTO } from '../dto/create-transfer.dto';
+import { ITransferUseCase } from 'src/domain/usecases/transfer.usecase.interface';
 
 export class TransferService {
-  private readonly transferUseCase: TransferUseCase;
+  private readonly transferUseCase: ITransferUseCase;
 
-  constructor(transferUseCase: TransferUseCase) {
+  constructor(transferUseCase: ITransferUseCase) {
     this.transferUseCase = transferUseCase;
   }
 
