@@ -3,11 +3,11 @@ import { InvalidTransferValueError } from '../errors/invalid-transfer-value.erro
 import { InvalidUsernameError } from '../errors/invalid-username.error';
 
 export class User {
-  private _id?: string;
-  private _username: string;
-  private _password: string;
-  private _birthdate: string;
-  private _balance: number;
+  private id?: string;
+  private username: string;
+  private password: string;
+  private birthdate: string;
+  private balance: number;
 
   constructor(
     username: string,
@@ -16,27 +16,27 @@ export class User {
     balance: number = 0,
     id?: string,
   ) {
-    this._username = this.checkUsername(username);
-    this._password = this.checkPassword(password);
-    this._birthdate = birthdate;
-    this._balance = balance;
-    this._id = id;
+    this.username = this.checkUsername(username);
+    this.password = this.checkPassword(password);
+    this.birthdate = birthdate;
+    this.balance = balance;
+    this.id = id;
   }
 
   public getId(): string | undefined {
-    return this._id;
+    return this.id;
   }
 
   public setId(id: string) {
-    this._id = id;
+    this.id = id;
   }
 
   public getUserName(): string {
-    return this._username;
+    return this.username;
   }
 
   public setUserName(username: string) {
-    this._username = this.checkUsername(username);
+    this.username = this.checkUsername(username);
   }
 
   private checkUsername(username: string): string {
@@ -49,23 +49,23 @@ export class User {
   }
 
   public getPassword(): string {
-    return this._password;
+    return this.password;
   }
 
   public setPassword(password: string) {
-    this._password = this.checkPassword(password);
+    this.password = this.checkPassword(password);
   }
 
   public getBirthdate(): string {
-    return this._birthdate;
+    return this.birthdate;
   }
 
   public setBirthdate(birthdate: string) {
-    this._birthdate = birthdate;
+    this.birthdate = birthdate;
   }
 
   public getBalance(): number {
-    return this._balance;
+    return this.balance;
   }
 
   private checkPassword(password: string): string {
@@ -77,11 +77,11 @@ export class User {
   }
 
   public addToBalance(amount: number) {
-    this._balance += this.checkTransferBalance(amount);
+    this.balance += this.checkTransferBalance(amount);
   }
 
   public subtractFromBalance(amount: number) {
-    this._balance -= this.checkTransferBalance(amount);
+    this.balance -= this.checkTransferBalance(amount);
   }
 
   private checkTransferBalance(amount: number): number {

@@ -6,10 +6,14 @@ import { TransferService } from 'src/application/services/transfer.service';
 import { JwtAuthGuard } from 'src/infrastructure/auth/jwt-auth.guard';
 import { CreateTransferSwaggerDTO } from '../dto/swagger/create-transfer.swagger.dto';
 
-@ApiTags('transfers')
-@Controller('transfers')
+@ApiTags('transfer')
+@Controller('transfer')
 export class TransferController {
-  constructor(private readonly transferService: TransferService) {}
+  private readonly transferService: TransferService;
+
+  constructor(transferService: TransferService) {
+    this.transferService = transferService;
+  }
 
   @UseGuards(JwtAuthGuard)
   @Post()

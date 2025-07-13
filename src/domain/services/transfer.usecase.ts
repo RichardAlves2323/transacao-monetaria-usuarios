@@ -5,8 +5,8 @@ import { ITransferUseCase } from '../usecases/transfer.usecase.interface';
 import { IUserUseCase } from '../usecases/user.usecase.interface';
 
 export class TransferUseCase implements ITransferUseCase {
-  private transferRepository: TransferRepository;
-  private userUseCase: IUserUseCase;
+  private readonly transferRepository: TransferRepository;
+  private readonly userUseCase: IUserUseCase;
 
   constructor(
     transferRepository: TransferRepository,

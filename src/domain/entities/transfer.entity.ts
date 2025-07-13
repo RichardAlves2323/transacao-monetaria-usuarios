@@ -1,32 +1,32 @@
 import { InvalidTransferValueError } from '../errors/invalid-transfer-value.error';
 
 export class Transfer {
-  private _id?: string;
-  private _fromId: string;
-  private _toId: string;
-  private _amount: number;
+  private id?: string;
+  private fromId: string;
+  private toId: string;
+  private amount: number;
 
   constructor(fromId: string, toId: string, amount: number, id?: string) {
-    this._fromId = fromId;
-    this._toId = toId;
-    this._amount = this.checkAmount(amount);
-    this._id = id;
+    this.fromId = fromId;
+    this.toId = toId;
+    this.amount = this.checkAmount(amount);
+    this.id = id;
   }
 
   public getId(): string | undefined {
-    return this._id;
+    return this.id;
   }
 
   public getFromId(): string {
-    return this._fromId;
+    return this.fromId;
   }
 
   public getToId(): string {
-    return this._toId;
+    return this.toId;
   }
 
   public getAmount(): number {
-    return this._amount;
+    return this.amount;
   }
 
   private checkAmount(amount: number): number {

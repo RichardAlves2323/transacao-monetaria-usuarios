@@ -5,9 +5,19 @@ import { UserController } from './presentation/controllers/user.controller';
 import { UserTypeOrm } from './infrastructure/database/models/user.orm-entity';
 import { UserService } from './application/services/user.service';
 import { UserRepositoryByTypeOrm } from './infrastructure/database/repositories/user.repository.by-typeorm';
+import { PassportModule } from '@nestjs/passport';
+import { JwtModule, JwtService } from '@nestjs/jwt';
+import { AuthService } from './infrastructure/auth/auth.service';
+import { JwtStrategy } from './infrastructure/auth/jwt.strategy';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([UserTypeOrm])],
+  imports: [
+    TypeOrmModule.forFeature([UserTypeOrm]),
+    PassportModule,
+    JwtModule.register({
+      secret: 'umaSenha',
+    }),
+  ],
   controllers: [UserController],
   providers: [
     {
@@ -28,7 +38,15 @@ import { UserRepositoryByTypeOrm } from './infrastructure/database/repositories/
       },
       inject: ['IUserUseCase'],
     },
+    {
+      provide: AuthService,
+      useFactory: (jwtService: JwtService, userUseCase: UserUseCase) => {
+        return new AuthService(jwtService, userUseCase);
+      },
+      inject: [JwtService, 'IUserUseCase'],
+    },
+    JwtStrategy,
   ],
-  exports: ['IUserUseCase'],
+  exports: ['IUserUseCase', AuthService],
 })
 export class UserModule {}
