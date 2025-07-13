@@ -9,13 +9,14 @@ import { PassportModule } from '@nestjs/passport';
 import { JwtModule, JwtService } from '@nestjs/jwt';
 import { AuthService } from './infrastructure/auth/auth.service';
 import { JwtStrategy } from './infrastructure/auth/jwt.strategy';
+import { env } from './config/environment';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([UserTypeOrm]),
     PassportModule,
     JwtModule.register({
-      secret: 'umaSenha',
+      secret: env.jwtSecret,
     }),
   ],
   controllers: [UserController],
