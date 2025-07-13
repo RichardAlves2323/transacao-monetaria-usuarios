@@ -34,7 +34,7 @@ describe('TransferRepository (TypeORM)', () => {
       new Transfer('1', '2', 100),
     );
 
-    expect(savedTransfer).toHaveProperty('_id');
+    expect(savedTransfer).toHaveProperty('id');
     expect(savedTransfer.getFromId()).toBe('1');
   });
 
