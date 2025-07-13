@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { LoginDTO } from 'src/application/dto/login.dto';
-import { User } from 'src/domain/entities/user.entity';
 import { IUserUseCase } from 'src/domain/usecases/user.usecase.interface';
+import { InvalidUserError } from '../errors/invalid-user.error';
 
 @Injectable()
 export class AuthService {
@@ -14,22 +14,14 @@ export class AuthService {
   public async login(loginDTO: LoginDTO) {
     const user = await this.userUseCase.findByUsername(loginDTO.username);
 
-    if (this.checkUser(user, loginDTO.password)) {
-      const payload = { username: user.getUserName() };
+    if (!user || user.getPassword() !== loginDTO.password)
+      throw new InvalidUserError();
 
-      return {
-        token: this.jwtService.sign(payload, { expiresIn: '1h' }),
-        expiresIn: '1h',
-      };
-    }
+    const payload = { username: user.getUserName() };
 
-    throw new Error('Autenticação falhou');
-  }
-
-  private checkUser(user: User | null, password: string): boolean {
-    if (!user || user.getPassword() !== password)
-      throw new Error('Username ou senha invalido');
-
-    return true;
+    return {
+      token: this.jwtService.sign(payload, { expiresIn: '1h' }),
+      expiresIn: '1h',
+    };
   }
 }

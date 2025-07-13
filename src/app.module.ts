@@ -2,8 +2,6 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './user.module';
 import { TransferModule } from './transfer.module';
-import { AuthModule } from './auth.module';
-
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -14,7 +12,6 @@ import { AuthModule } from './auth.module';
     }),
     UserModule,
     TransferModule,
-    AuthModule,
   ],
 })
 export class AppModule {}
