@@ -7,7 +7,7 @@ O principal objetivo da aplicação é **servir como estudo prático** sobre:
 - Criação de testes unitários e de integração
 - Documentação com Swagger
 - Uso de JWT para autenticação
-- Integração com banco de dados (SQLite ou Postgres)
+- Integração com banco de dados (SQLite)
 
 ---
 
