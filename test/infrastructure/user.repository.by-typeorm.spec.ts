@@ -33,7 +33,7 @@ describe('UserRepository (TypeORM)', () => {
 
     const savedUser = await userRepository.save(user);
 
-    expect(savedUser).toHaveProperty('_id');
+    expect(savedUser).toHaveProperty('id');
     expect(savedUser.getUserName()).toBe(user.getUserName());
   });
 
