@@ -2,13 +2,16 @@ import { User } from '../entities/user.entity';
 import { DuplicateUsernameError } from '../errors/duplicate-username.error';
 import { UserNotFoundError } from '../errors/user-not-found.error';
 import { UserRepository } from '../repositories/user.repository';
-import { IUserUseCase } from '../usecases/user.usecase.interface';
+import { IUserUseCase } from '../interfaces/usecases/user.usecase.interface';
+import { IHasher } from '../interfaces/cryptography/cryptography.interface';
 
 export class UserUseCase implements IUserUseCase {
   private readonly userRepository: UserRepository;
+  private readonly hasher: IHasher;
 
-  constructor(userRepository: UserRepository) {
+  constructor(userRepository: UserRepository, hasher: IHasher) {
     this.userRepository = userRepository;
+    this.hasher = hasher;
   }
 
   public async create(user: User): Promise<string> {
@@ -18,6 +21,8 @@ export class UserUseCase implements IUserUseCase {
 
     if (existUser) throw new DuplicateUsernameError();
 
+    const passwordHashed = await this.hasher.hash(user.getPassword());
+    user.setPassword(passwordHashed);
     const newUser: User = await this.userRepository.save(user);
 
     return newUser.getId()!;

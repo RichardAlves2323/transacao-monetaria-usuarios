@@ -1,4 +1,4 @@
-import { User } from '../entities/user.entity';
+import { User } from 'src/domain/entities/user.entity';
 
 export interface IUserUseCase {
   create(user: User): Promise<string>;

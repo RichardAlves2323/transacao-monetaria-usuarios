@@ -1,6 +1,6 @@
+import { IUserUseCase } from 'src/domain/interfaces/usecases/user.usecase.interface';
 import { CreateUserDTO } from '../dto/create-user.dto';
 import { UserDTO } from '../dto/user.dto';
-import { IUserUseCase } from 'src/domain/usecases/user.usecase.interface';
 
 export class UserService {
   private readonly userUseCase: IUserUseCase;
