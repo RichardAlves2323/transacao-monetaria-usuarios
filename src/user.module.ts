@@ -10,6 +10,7 @@ import { JwtModule, JwtService } from '@nestjs/jwt';
 import { AuthService } from './infrastructure/auth/auth.service';
 import { JwtStrategy } from './infrastructure/auth/jwt.strategy';
 import { env } from './config/environment';
+import { BcryptService } from './infrastructure/cryptography/bcrypt.service';
 
 @Module({
   imports: [
@@ -26,11 +27,18 @@ import { env } from './config/environment';
       useClass: UserRepositoryByTypeOrm,
     },
     {
+      provide: 'IHasher',
+      useClass: BcryptService,
+    },
+    {
       provide: 'IUserUseCase',
-      useFactory: (userRepository: UserRepositoryByTypeOrm) => {
-        return new UserUseCase(userRepository);
+      useFactory: (
+        userRepository: UserRepositoryByTypeOrm,
+        hasher: BcryptService,
+      ) => {
+        return new UserUseCase(userRepository, hasher);
       },
-      inject: ['UserRepository'],
+      inject: ['UserRepository', 'IHasher'],
     },
     {
       provide: UserService,
@@ -41,10 +49,14 @@ import { env } from './config/environment';
     },
     {
       provide: AuthService,
-      useFactory: (jwtService: JwtService, userUseCase: UserUseCase) => {
-        return new AuthService(jwtService, userUseCase);
+      useFactory: (
+        jwtService: JwtService,
+        userUseCase: UserUseCase,
+        hasher: BcryptService,
+      ) => {
+        return new AuthService(jwtService, userUseCase, hasher);
       },
-      inject: [JwtService, 'IUserUseCase'],
+      inject: [JwtService, 'IUserUseCase', 'IHasher'],
     },
     JwtStrategy,
   ],
