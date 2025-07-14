@@ -14,12 +14,19 @@ describe('UserUseCase', () => {
     update: jest.fn(),
   };
 
+  const hasherMock = {
+    hash: jest.fn(),
+    compare: jest.fn(),
+  };
+
   beforeEach(() => {
-    userUseCase = new UserUseCase(userRepositoryMock);
+    userUseCase = new UserUseCase(userRepositoryMock, hasherMock);
   });
 
   it('deve ser possiver criar um novo usuário', async () => {
     const newUser = new User('test', '12345678', '07-23-1999');
+
+    hasherMock.hash.mockResolvedValue('passwordHashed');
 
     userRepositoryMock.save.mockResolvedValueOnce(
       new User('test', '12345678', '07-23-1999', 0, '1'),
