@@ -1,4 +1,4 @@
-import { Transfer } from '../entities/transfer.entity';
+import { Transfer } from 'src/domain/entities/transfer.entity';
 
 export interface ITransferUseCase {
   create(transfer: Transfer): Promise<void>;

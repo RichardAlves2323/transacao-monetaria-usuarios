@@ -1,8 +1,8 @@
 import { Transfer } from '../entities/transfer.entity';
 import { SameUserError } from '../errors/same-user.error';
 import { TransferRepository } from '../repositories/transfer.repository';
-import { ITransferUseCase } from '../usecases/transfer.usecase.interface';
-import { IUserUseCase } from '../usecases/user.usecase.interface';
+import { ITransferUseCase } from '../interfaces/usecases/transfer.usecase.interface';
+import { IUserUseCase } from '../interfaces/usecases/user.usecase.interface';
 
 export class TransferUseCase implements ITransferUseCase {
   private readonly transferRepository: TransferRepository;

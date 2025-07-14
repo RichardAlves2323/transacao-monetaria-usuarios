@@ -1,5 +1,5 @@
 import { CreateTransferDTO } from '../dto/create-transfer.dto';
-import { ITransferUseCase } from 'src/domain/usecases/transfer.usecase.interface';
+import { ITransferUseCase } from 'src/domain/interfaces/usecases/transfer.usecase.interface';
 
 export class TransferService {
   private readonly transferUseCase: ITransferUseCase;
