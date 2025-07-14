@@ -91,5 +91,5 @@ A aplicação estará disponível em: `http://localhost:3000`
 ## 🐳 Rodando com Docker
 
 ```bash
-docker-compose up --build
+docker compose up --build
 ```
